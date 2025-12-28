@@ -1,0 +1,37 @@
+services:
+  saleor-meili-app:
+    image: meilisearch-saleor-extension
+    command: sleep infinity
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    ports:
+      - 7000:7000
+    volumes:
+      - "..:/app"
+      - "pnpm-store:/app/.pnpm-store"
+    environment:
+      MEILI_HOST: http://meilisearch:7700
+      MEILI_ADMIN_KEY: masterKey12345678901234567890
+      APP_IFRAME_BASE_URL: https://suzette-unlaminated-pulchritudinously.ngrok-free.dev
+      APP_API_BASE_URL: https://suzette-unlaminated-pulchritudinously.ngrok-free.dev
+      SALEOR_API_URL: http://localhost:8000/graphql/
+    depends_on:
+      - meilisearch
+
+  meilisearch:
+    image: getmeili/meilisearch:v1.6
+    container_name: meilisearch
+    environment:
+      MEILI_ENV: production
+      MEILI_MASTER_KEY: masterKey12345678901234567890
+    volumes:
+      - meili_data:/meili_data
+    ports:
+      - "7700:7700"
+
+volumes:
+  pnpm-store:
+    driver: local
+  meili_data:
+    driver: local

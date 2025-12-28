@@ -1,0 +1,23 @@
+{
+  "name": "saleor-meili-app",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "saleor-meili-app",
+  "workspaceFolder": "/app",
+  "forwardPorts": [7000],
+  "portsAttributes": {
+    "7000": {
+      "label": "Saleor app"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "GraphQL.vscode-graphql-syntax",
+        "GraphQL.vscode-graphql",
+        "streetsidesoftware.code-spell-checker"
+      ]
+    }
+  }
+}

@@ -1,0 +1,45 @@
+services:
+  saleor-meili-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "7000:7000"
+    environment:
+      - HOSTNAME=0.0.0.0
+      - PORT=7000
+      - NODE_ENV=production
+      # Meilisearch connection (uses the service name as host)
+      - MEILI_HOST=http://meilisearch:7700
+      - MEILI_ADMIN_KEY=${MEILI_ADMIN_KEY:-masterKey12345678901234567890}
+      - SALEOR_API_URL=http://host.docker.internal:8000/graphql/
+      - APP_IFRAME_BASE_URL=https://suzette-unlaminated-pulchritudinously.ngrok-free.dev
+      - APP_API_BASE_URL=https://suzette-unlaminated-pulchritudinously.ngrok-free.dev
+
+    depends_on:
+      meilisearch:
+        condition: service_healthy
+
+  # The Search Engine
+  meilisearch:
+    image: getmeili/meilisearch:v1.6
+    restart: always
+    ports:
+      - "7700:7700"
+    environment:
+      - MEILI_ENV=production
+      - MEILI_MASTER_KEY=${MEILI_ADMIN_KEY:-masterKey12345678901234567890}
+      - MEILI_NO_ANALYTICS=true
+    volumes:
+      - meili_data:/meili_data
+    # Ensures Meili is fully booted before the app tries to sync
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7700/health"]
+      interval: 5s
+      timeout: 2s
+      retries: 5
+
+volumes:
+  meili_data:
+    driver: local
