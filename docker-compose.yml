@@ -4,38 +4,47 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: always
-    ports:
-      - "7000:7000"
     env_file:
-      - ./.env
+      - ./stack.env
     environment:
       - HOSTNAME=0.0.0.0
       - PORT=7000
       - NODE_ENV=production
-
     depends_on:
       meilisearch:
         condition: service_healthy
+    networks:
+      - traefik-net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-net"
 
-  # The Search Engine
+      - "traefik.http.routers.saleor-meili.rule=Host(`saleor-meili.aahrbitx.in`)"
+      - "traefik.http.routers.saleor-meili.entrypoints=websecure"
+      - "traefik.http.routers.saleor-meili.tls=true"
+      - "traefik.http.routers.saleor-meili.tls.certresolver=letsencrypt"
+      - "traefik.http.services.saleor-meili.loadbalancer.server.port=7000"
+
   meilisearch:
     image: getmeili/meilisearch:v1.6
     restart: always
-    ports:
-      - "7700:7700"
     environment:
       - MEILI_ENV=production
-      - MEILI_MASTER_KEY=${MEILI_ADMIN_KEY:-masterKey12345678901234567890}
+      - MEILI_MASTER_KEY=${MEILI_ADMIN_KEY}
       - MEILI_NO_ANALYTICS=true
     volumes:
       - meili_data:/meili_data
-    # Ensures Meili is fully booted before the app tries to sync
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:7700/health"]
       interval: 5s
       timeout: 2s
       retries: 5
+    networks:
+      - traefik-net
 
 volumes:
   meili_data:
-    driver: local
+
+networks:
+  traefik-net:
+    external: true
