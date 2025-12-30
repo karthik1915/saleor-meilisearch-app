@@ -6,16 +6,12 @@ services:
     restart: always
     ports:
       - "7000:7000"
+    env_file:
+      - ./.env
     environment:
       - HOSTNAME=0.0.0.0
       - PORT=7000
       - NODE_ENV=production
-      # Meilisearch connection (uses the service name as host)
-      - MEILI_HOST=http://meilisearch:7700
-      - MEILI_ADMIN_KEY=${MEILI_ADMIN_KEY:-masterKey12345678901234567890}
-      - SALEOR_API_URL=http://host.docker.internal:8000/graphql/
-      - APP_IFRAME_BASE_URL=https://suzette-unlaminated-pulchritudinously.ngrok-free.dev
-      - APP_API_BASE_URL=https://suzette-unlaminated-pulchritudinously.ngrok-free.dev
 
     depends_on:
       meilisearch:
