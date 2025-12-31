@@ -68,7 +68,8 @@
     "tsx": "4.20.3",
     "typescript": "5.0.4",
     "vite": "5.2.10",
-    "vite-tsconfig-paths": "5.1.4"
+    "vite-tsconfig-paths": "5.1.4",
+    "vitest": "1.5.2"
   },
   "lint-staged": {
     "*.{js,ts,tsx}": "eslint --cache --fix",
