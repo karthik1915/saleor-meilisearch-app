@@ -19,7 +19,7 @@ services:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik-net"
 
-      - "traefik.http.routers.saleor-meili.rule=Host(`saleor-meili.aahrbitx.in`)"
+      - "traefik.http.routers.saleor-meili.rule=Host(`ecommerce-search.aahrbitx.in`)"
       - "traefik.http.routers.saleor-meili.entrypoints=websecure"
       - "traefik.http.routers.saleor-meili.tls=true"
       - "traefik.http.routers.saleor-meili.tls.certresolver=letsencrypt"

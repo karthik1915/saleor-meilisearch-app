@@ -14,6 +14,12 @@ const IndexPage: NextPage = () => {
   const fetchIndexes = async () => {
     const res = await fetch("/api/meili/indexes", { cache: "no-store" });
     const data = await res.json();
+
+    if (!data) {
+      console.error("No data available while fetching indexes");
+      setIndexes([]);
+    }
+
     setIndexes(data);
   };
 
@@ -53,27 +59,23 @@ const IndexPage: NextPage = () => {
             </tr>
           </thead>
           <tbody>
-            {indexes.map((idx) => (
-              <tr key={idx.uid}>
-                <td className="font-bold">{idx.uid}</td>
-                <td>{idx.numberOfDocuments.toLocaleString()}</td>
-                <td>
-                  <span className={`badge ${idx.isIndexing ? "running" : "idle"}`}>
-                    {idx.isIndexing ? "Indexing" : "Idle"}
-                  </span>
-                </td>
-                <td>
-                  <button
-                    className="text-btn danger"
-                    onClick={() => {
-                      /* delete func */
-                    }}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
+            {indexes.length &&
+              indexes.map((idx) => (
+                <tr key={idx.uid}>
+                  <td className="font-bold">{idx.uid}</td>
+                  <td>{idx.numberOfDocuments.toLocaleString()}</td>
+                  <td>
+                    <span className={`badge ${idx.isIndexing ? "running" : "idle"}`}>
+                      {idx.isIndexing ? "Indexing" : "Idle"}
+                    </span>
+                  </td>
+                  <td>
+                    <button className="text-btn danger" onClick={() => {}}>
+                      Delete: TODO
+                    </button>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>

@@ -32,6 +32,8 @@ export default function TasksPage() {
 
   const { theme } = useTheme();
 
+  const formatDate = (value?: string | null) => (value ? new Date(value).toLocaleString() : "-");
+
   return (
     <div className={`page ${theme}`}>
       <div className="header">
@@ -67,7 +69,7 @@ export default function TasksPage() {
                 <div className="task-body">
                   <div className="task-row">
                     <span>Enqueued</span>
-                    <span>{task.enqueuedAt ?? "-"}</span>
+                    <span>{formatDate(task.enqueuedAt)}</span>
                   </div>
                   <div className="task-row">
                     <span>Started</span>
