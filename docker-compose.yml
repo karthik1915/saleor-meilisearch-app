@@ -30,7 +30,6 @@ services:
     restart: always
     environment:
       - MEILI_ENV=production
-      - MEILI_MASTER_KEY=${MEILI_ADMIN_KEY}
       - MEILI_NO_ANALYTICS=true
     volumes:
       - meili_data:/meili_data
