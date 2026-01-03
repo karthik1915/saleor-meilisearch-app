@@ -28,6 +28,8 @@ services:
   meilisearch:
     image: getmeili/meilisearch:v1.6
     restart: always
+    env_file:
+      - ./stack.env
     environment:
       - MEILI_ENV=production
       - MEILI_NO_ANALYTICS=true
