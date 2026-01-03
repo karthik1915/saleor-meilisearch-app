@@ -75,9 +75,11 @@ async function setupCategoryIndexes() {
 
   await ensureIndex("categories", "id");
 
+  console.log(`Indexing categories...`);
+
   while (hasNextPage) {
     const categoryData = (await saleorClient.request(PUBLIC_CATEGORY_QUERY, {
-      first: 10,
+      first: 5,
       after,
     })) as { categories: CategoryCountableConnection };
 
@@ -96,6 +98,8 @@ async function setupCategoryIndexes() {
     searchableAttributes: ["name"],
     filterableAttributes: ["slug", "level"],
   });
+
+  console.log(`Indexing complete for categories`);
 }
 
 export async function setupIndexes() {

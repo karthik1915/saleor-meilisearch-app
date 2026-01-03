@@ -1,91 +1,58 @@
-export const runtime = "edge";
-
+import type { NextApiRequest, NextApiResponse } from "next";
 import { meili } from "@/meili/client";
-import { NextResponse } from "next/server";
 
-export default async function handler(req: Request) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "GET") {
-    return new NextResponse(JSON.stringify({ message: "Method not allowed" }), { status: 405 });
+    res.status(405).json({ message: "Method not allowed" });
+    return;
   }
 
   try {
-    const { searchParams } = new URL(req.url);
+    const { q = "", limit = "12", offset = "0", sort, ...rest } = req.query;
 
-    // 1. Basic Params
-    const q = searchParams.get("q") || "";
-    const limit = parseInt(searchParams.get("limit") || "12");
-    const offset = parseInt(searchParams.get("offset") || "0");
-    const sort = searchParams.get("sort") ? [searchParams.get("sort")!] : [];
+    const parsedLimit = parseInt(limit as string);
+    const parsedOffset = parseInt(offset as string);
 
-    // 2. Advanced Filtering Logic
+    const sortArray = sort ? [sort as string] : [];
+
     const filterArray: string[] = [];
 
-    // Map through all search params to build filters
-    searchParams.forEach((value, key) => {
-      // Skip pagination/search keys
-      if (["q", "limit", "offset", "sort"].includes(key)) return;
-
-      // Handle Range Filters (e.g., price_amount_min=10 -> price_amount >= 10)
-      if (key.endsWith("_min")) {
-        const field = key.replace("_min", "");
-        filterArray.push(`${field} >= ${value}`);
+    Object.entries(rest).forEach(([key, value]) => {
+      if (Array.isArray(value)) {
+        const orFilter = value.map((v) => `${key} = "${v}"`).join(" OR ");
+        filterArray.push(`(${orFilter})`);
+      } else if (key.endsWith("_min")) {
+        filterArray.push(`${key.replace("_min", "")} >= ${value}`);
       } else if (key.endsWith("_max")) {
-        const field = key.replace("_max", "");
-        filterArray.push(`${field} <= ${value}`);
-      }
-      // Handle Equality Filters (e.g., brand=Nike -> brand = "Nike")
-      else {
-        // We use getAll to support multiple checkboxes of same name (?brand=Nike&brand=Adidas)
-        const values = searchParams.getAll(key);
-        if (values.length > 1) {
-          const orFilter = values.map((v) => `${key} = "${v}"`).join(" OR ");
-          filterArray.push(`(${orFilter})`);
-        } else {
-          filterArray.push(`${key} = "${value}"`);
-        }
+        filterArray.push(`${key.replace("_max", "")} <= ${value}`);
+      } else {
+        filterArray.push(`${key} = "${value}"`);
       }
     });
 
     const filters = filterArray.join(" AND ");
 
-    const multiSearchResponse = await meili.multiSearch({
+    const result = await meili.multiSearch({
       queries: [
         {
           indexUid: "products",
-          q,
-          limit,
-          offset,
+          q: q as string,
+          limit: parsedLimit,
+          offset: parsedOffset,
           filter: filters,
-          sort: sort,
-          attributesToRetrieve: [
-            "id",
-            "name",
-            "slug",
-            "price_amount",
-            "currency",
-            "channel_name",
-            "channel_slug",
-            "category_name",
-            "category_slug",
-            "thumbnail_src",
-            "description_plain",
-            "flavor",
-            "is_available",
-            "updated_at",
-          ],
+          sort: sortArray,
         },
         {
           indexUid: "categories",
-          q,
+          q: q as string,
           limit: 4,
-          attributesToRetrieve: ["id", "name", "slug"],
         },
       ],
     });
 
-    return NextResponse.json(multiSearchResponse);
+    res.json(result);
   } catch (err: any) {
-    console.error("Meilisearch API Error:", err);
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    console.error(err);
+    res.status(500).json({ error: err.message });
   }
 }

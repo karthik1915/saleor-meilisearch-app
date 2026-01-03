@@ -152,7 +152,7 @@ body {
   color: var(--text-muted);
   text-transform: uppercase;
   font-size: var(--mu-font-size-1);
-  text-align: start;
+  text-align: left;
   border-bottom: var(--mu-border-width-1) solid var(--border);
 }
 
@@ -186,7 +186,7 @@ body {
   display: flex;
   justify-content: space-between;
   cursor: pointer;
-  align-items: start;
+  align-items: flex-start;
 }
 
 .task-body {

@@ -73,11 +73,11 @@ export default function TasksPage() {
                   </div>
                   <div className="task-row">
                     <span>Started</span>
-                    <span>{task.startedAt ?? "-"}</span>
+                    <span>{formatDate(task.startedAt) ?? "-"}</span>
                   </div>
                   <div className="task-row">
                     <span>Finished</span>
-                    <span>{task.finishedAt ?? "-"}</span>
+                    <span>{formatDate(task.finishedAt) ?? "-"}</span>
                   </div>
 
                   {task.error && (

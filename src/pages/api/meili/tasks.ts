@@ -20,6 +20,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           ? new Date(t.finishedAt).getTime() - new Date(t.startedAt).getTime()
           : null,
       enqueuedAt: t.enqueuedAt,
+      startedAt: t.startedAt,
+      finishedAt: t.finishedAt,
     }));
 
     res.status(200).json(normalized);
