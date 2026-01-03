@@ -1,8 +1,11 @@
+import "dotemv/config";
 import { saleorApp } from "@/saleor-app";
 import { GraphQLClient } from "graphql-request";
 
+const saleorApiUrl = process.env.SALEOR_API_URL;
+
 export async function getAppSaleorClient() {
-  const authData = await saleorApp.apl.get("http://localhost:8000/graphql/");
+  const authData = await saleorApp.apl.get(saleorApiUrl);
 
   if (!authData) {
     console.error("No auth data available");
