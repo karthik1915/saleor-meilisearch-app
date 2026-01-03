@@ -1,8 +1,8 @@
-import "dotemv/config";
+import "dotenv/config";
 import { saleorApp } from "@/saleor-app";
 import { GraphQLClient } from "graphql-request";
 
-const saleorApiUrl = process.env.SALEOR_API_URL;
+const saleorApiUrl = process.env.SALEOR_API_URL!;
 
 export async function getAppSaleorClient() {
   const authData = await saleorApp.apl.get(saleorApiUrl);
