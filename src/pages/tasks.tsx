@@ -38,7 +38,7 @@ export default function TasksPage() {
     <div className={`page ${theme}`}>
       <div className="header">
         <div>
-          <Link href="/" className="back-link">
+          <Link href="/" className="breadcrumb-item active">
             ← Back to Indexes
           </Link>
           <h1>Task History</h1>

@@ -86,3 +86,17 @@ export const PUBLIC_CATEGORY_QUERY = gql`
     }
   }
 `;
+
+export const CHANNELS_LIST_QUERY = gql`
+  query getAllChannels {
+    channels {
+      id
+      name
+      slug
+      defaultCountry {
+        code
+        country
+      }
+    }
+  }
+`;
