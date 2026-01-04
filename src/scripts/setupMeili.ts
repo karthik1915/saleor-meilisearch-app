@@ -53,17 +53,16 @@ async function setupProductIndexes() {
   }
 
   await meili.index("products").updateSettings({
-    searchableAttributes: ["name", "description", "categories.name", "attributes.*"],
+    searchableAttributes: ["name", "description", "category_name", "attributes.*"],
     filterableAttributes: [
       "isPublished",
       "channel",
-      "categories.slug",
-      "categories.path",
-      "availability.inStock",
-      "pricing.min",
+      "category_slug",
+      "is_available",
+      "price_amount",
       "attributes.*",
     ],
-    sortableAttributes: ["pricing.min", "createdAt"],
+    sortableAttributes: ["price_amount", "createdAt"],
   });
 }
 

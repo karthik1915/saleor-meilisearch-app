@@ -1,15 +1,14 @@
 services:
   saleor-meili-app:
+    container_name: saleor-meili-app
     build:
       context: .
       dockerfile: Dockerfile
     restart: always
+    ports:
+      - "7000:7000"
     env_file:
       - ./stack.env
-    environment:
-      - HOSTNAME=0.0.0.0
-      - PORT=7000
-      - NODE_ENV=production
     depends_on:
       meilisearch:
         condition: service_healthy
@@ -18,7 +17,6 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik-net"
-
       - "traefik.http.routers.saleor-meili.rule=Host(`ecommerce-search.aahrbitx.in`)"
       - "traefik.http.routers.saleor-meili.entrypoints=websecure"
       - "traefik.http.routers.saleor-meili.tls=true"

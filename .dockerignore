@@ -24,4 +24,4 @@ docker-compose.yml
 **/*.log
 **/*.tsbuildinfo
 
-.saleor-app-auth.json
+saleor-app-auth.json

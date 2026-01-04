@@ -1,7 +1,7 @@
-import { useAppBridge } from "@saleor/app-sdk/app-bridge";
-import { NextPage } from "next";
 import Link from "next/link";
+import { NextPage } from "next";
 import { useEffect, useState, useCallback } from "react";
+import { useAppBridge } from "@saleor/app-sdk/app-bridge";
 
 const IndexPage: NextPage = () => {
   const { appBridgeState } = useAppBridge();
