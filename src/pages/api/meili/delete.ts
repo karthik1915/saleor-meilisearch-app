@@ -1,4 +1,4 @@
-import deleteMeiliIndexes from "@/scripts/deleteMeiliIndex";
+import deleteMeiliIndexes from "@/meili/scripts/deleteMeiliIndex";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

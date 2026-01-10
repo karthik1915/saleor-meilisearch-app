@@ -2,6 +2,7 @@ import { AppExtension, AppManifest } from "@saleor/app-sdk/types";
 import { createManifestHandler } from "@saleor/app-sdk/handlers/next";
 
 import packageJson from "@/package.json";
+import { productUpdatedWebhook } from "./webhooks/product-updated";
 
 export default createManifestHandler({
   async manifestFactory({ appBaseUrl, request, schemaVersion }) {
@@ -17,7 +18,7 @@ export default createManifestHandler({
         target: "WIDGET",
         options: {
           widgetTarget: {
-            method: "POST",
+            method: "GET",
           },
         },
       },
@@ -34,10 +35,10 @@ export default createManifestHandler({
       name: "Meili Search for Saleor",
       tokenTargetUrl: `${apiBaseURL}/api/register`,
       appUrl: iframeBaseUrl,
-      permissions: [],
+      permissions: ["MANAGE_PRODUCTS", "MANAGE_PRODUCT_TYPES_AND_ATTRIBUTES"],
       id: "search.saleor.app",
       version: packageJson.version,
-      webhooks: [],
+      webhooks: [productUpdatedWebhook.getWebhookManifest(apiBaseURL)],
       extensions: extensions,
       author: "Aahrbitx",
       brand: {

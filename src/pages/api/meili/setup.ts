@@ -1,4 +1,4 @@
-import { setupIndexes } from "@/scripts/setupMeili";
+import { setupIndexes } from "@/meili/scripts/setupMeili";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

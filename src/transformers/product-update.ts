@@ -1,8 +1,8 @@
-import { AssignedAttribute, Channel } from "@/generated/graphql";
-import { Product } from "@/generated/graphql";
+import { Channel, Product } from "@/generated/graphql";
+import { AssignedAttribute } from "@/generated/graphql";
 import { getSafeId } from "@/utils/safeId";
 
-export const transformProduct = (product: Product, channel: Channel) => {
+export const transformProductUpd = (product: Product, channel: Channel) => {
   const safeId = getSafeId(product.id.replace(/=/g, "").replace(/\//g, "_").replace(/\+/g, "-"));
   const pricingStart = product.pricing?.priceRange?.start?.net;
   const price = pricingStart?.amount ?? 0;

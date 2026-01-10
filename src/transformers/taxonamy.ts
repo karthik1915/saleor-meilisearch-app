@@ -1,5 +1,7 @@
+import { getSafeId } from "@/utils/safeId";
+
 export const transformTaxonomy = (item: any) => {
-  const safeId = item.id.replace(/=/g, "").replace(/\//g, "_").replace(/\+/g, "-");
+  const safeId = getSafeId(item.id.replace(/=/g, "").replace(/\//g, "_").replace(/\+/g, "-"));
   return {
     id: safeId,
     saleorId: item.id,

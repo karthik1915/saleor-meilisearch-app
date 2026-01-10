@@ -1,30 +1,33 @@
+/* --- Corrected Variables Mapping --- */
 :root {
-  /* Mapping Saleor's variables to our internal semantic names */
-  --bg: var(--mu-colors-background-default2);
-  --surface: var(--mu-colors-background-default1);
+  /* Layout & Surface */
+  --bg: var(--mu-colors-background-default1);
+  --surface: var(--mu-colors-background-default2);
   --text: var(--mu-colors-text-default1);
   --text-muted: var(--mu-colors-text-default2);
   --border: var(--mu-colors-border-default1);
 
+  /* Primary Action */
   --primary: var(--mu-colors-background-button-default-primary);
   --primary-hover: var(--mu-colors-background-button-default-primary-hovered);
 
+  /* Semantic Colors */
   --danger: var(--mu-colors-text-critical2);
   --danger-surface: var(--mu-colors-background-button-critical-primary);
-
   --success: var(--mu-colors-text-success1);
   --warning: var(--mu-colors-text-warning1);
 
+  /* Border Radius */
   --radius-md: var(--mu-border-radius-4);
   --radius-lg: var(--mu-border-radius-5);
 }
 
-/* Saleor usually handles the body background, but we enforce it for the iframe */
 body {
   margin: 0;
   background-color: var(--bg);
   color: var(--text);
-  font-family: "Inter", system-ui, sans-serif;
+  font-family: "Inter var", system-ui, sans-serif;
+  box-sizing: border-box;
 }
 
 .page {
@@ -48,12 +51,15 @@ body {
   font-size: var(--mu-font-size-9);
   font-weight: var(--mu-font-weight-bold);
   letter-spacing: var(--mu-letter-spacing-9);
+  color: var(--text);
 }
 
 /* Breadcrumbs */
 .breadcrumb {
   margin-top: var(--mu-spacing-2);
   font-size: var(--mu-font-size-3);
+  display: flex;
+  align-items: center;
 }
 
 .breadcrumb-item {
@@ -71,7 +77,7 @@ body {
   color: var(--border);
 }
 
-/* Primary Button (Saleor Style) */
+/* Primary Button */
 .primary-btn {
   background: var(--primary);
   color: var(--mu-colors-text-button-default-primary);
@@ -84,11 +90,15 @@ body {
   display: flex;
   align-items: center;
   gap: var(--mu-spacing-2);
-  transition: background 0.2s;
+  transition: background 0.2s, transform 0.1s;
 }
 
 .primary-btn:hover:not(:disabled) {
   background: var(--primary-hover);
+}
+
+.primary-btn:active:not(:disabled) {
+  background: var(--mu-colors-background-button-default-primary-pressed);
 }
 
 .primary-btn:disabled {
@@ -151,20 +161,24 @@ body {
   font-weight: var(--mu-font-weight-bold);
   color: var(--text-muted);
   text-transform: uppercase;
-  font-size: var(--mu-font-size-1);
+  font-size: var(--mu-font-size-2); /* Adjusted to match working reference th size */
   text-align: left;
   border-bottom: var(--mu-border-width-1) solid var(--border);
+  letter-spacing: var(--mu-letter-spacing-1);
 }
 
 .index-table tbody td {
   padding: var(--mu-spacing-4);
   border-bottom: var(--mu-border-width-1) solid var(--border);
+  font-size: var(--mu-font-size-4);
+  color: var(--text);
 }
 
 .index-uid-cell {
-  font-family: monospace;
+  font-family: ui-monospace, monospace;
   font-weight: var(--mu-font-weight-bold);
   color: var(--mu-colors-text-accent1);
+  font-size: var(--mu-font-size-3);
 }
 
 /* Task Cards */
@@ -179,6 +193,7 @@ body {
   border: var(--mu-border-width-1) solid var(--border);
   border-radius: var(--radius-lg);
   box-shadow: var(--mu-box-shadow-default-hovered);
+  transition: box-shadow 0.2s;
 }
 
 .task-header {
@@ -190,22 +205,23 @@ body {
 }
 
 .task-body {
-  padding-top: 2px;
   padding: var(--mu-spacing-5);
 }
 
 .task-row {
   display: flex;
   justify-content: space-between;
+  margin-bottom: var(--mu-spacing-2);
 }
 
 /* Badges */
 .badge {
-  font-size: var(--mu-font-size-1);
-  padding: var(--mu-spacing-1) var(--mu-spacing-2-5);
-  border-radius: var(--mu-border-radius-2);
+  font-size: var(--mu-font-size-2);
+  padding: var(--mu-spacing-0-5) var(--mu-spacing-2-5);
+  border-radius: var(--mu-border-radius-9); /* Using the rounder reference radius */
   font-weight: var(--mu-font-weight-bold);
   text-transform: uppercase;
+  display: inline-flex;
 }
 
 .badge.succeeded,
@@ -228,12 +244,14 @@ body {
 
 /* Task Details / Pre blocks */
 .task-details {
-  background: var(--mu-colors-background-default3);
-  color: var(--mu-colors-text-default1);
+  background: var(
+    --mu-colors-background-default2
+  ); /* Changed default3 to default2 for better contrast on surface */
+  color: var(--text);
   padding: var(--mu-spacing-4);
   border-radius: var(--radius-md);
-  font-family: monospace;
-  font-size: var(--mu-font-size-2);
+  font-family: ui-monospace, monospace;
+  font-size: var(--mu-font-size-3);
   margin-top: var(--mu-spacing-3);
   max-height: 250px;
   overflow-y: auto;
@@ -248,6 +266,7 @@ body {
   font-weight: var(--mu-font-weight-bold);
   padding: var(--mu-spacing-2);
   cursor: pointer;
+  transition: background 0.2s;
 }
 
 .action-icon-btn.danger:hover {
@@ -262,6 +281,12 @@ body {
   padding: var(--mu-spacing-2) var(--mu-spacing-5);
   border-radius: var(--radius-md);
   cursor: pointer;
+  font-weight: var(--mu-font-weight-medium);
+  transition: background 0.2s;
+}
+
+.secondary-btn:hover {
+  background: var(--mu-colors-background-button-default-secondary-hovered);
 }
 
 /* Modals */
@@ -282,6 +307,10 @@ body {
   color: var(--mu-colors-text-button-critical-primary) !important;
 }
 
+.danger-bg:hover {
+  background: var(--mu-colors-background-button-critical-primary-hovered) !important;
+}
+
 /* Animations */
 @keyframes spin {
   to {
@@ -295,4 +324,92 @@ body {
   border-top-color: currentColor;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
+}
+
+/* --- Meili Widget Styling --- */
+
+.widget-container {
+  background: var(--mu-colors-background-default1);
+  border: var(--mu-border-width-1) solid var(--mu-colors-border-default1);
+  border-radius: var(--mu-border-radius-4);
+  padding: var(--mu-spacing-3);
+  max-width: 100%;
+}
+
+.widget-header {
+  margin-bottom: var(--mu-spacing-3);
+  padding-bottom: var(--mu-spacing-2);
+  border-bottom: var(--mu-border-width-1) solid var(--mu-colors-border-default1);
+}
+
+.widget-status {
+  padding: var(--mu-spacing-4);
+  color: var(--mu-colors-text-default3);
+  font-style: italic;
+}
+
+.widget-scroll-wrapper {
+  width: 100%;
+  overflow-x: auto; /* Allows table to scroll if IDs are too wide */
+  scrollbar-width: thin;
+}
+
+.widget-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--mu-font-size-2); /* Smaller text for sidebar */
+}
+
+.widget-table td {
+  padding: var(--mu-spacing-2) var(--mu-spacing-1);
+  border-bottom: var(--mu-border-width-1) solid var(--mu-colors-background-default2);
+  vertical-align: top;
+  color: var(--mu-colors-text-default1);
+  line-height: var(--mu-line-height-2);
+}
+
+/* Labels (Left Column) */
+.widget-table td:first-child {
+  color: var(--mu-colors-text-default2);
+  font-weight: var(--mu-font-weight-medium);
+  width: 35%; /* Fixed width for labels */
+  white-space: nowrap;
+}
+
+/* Values (Right Column) */
+.widget-table td:last-child {
+  text-align: right;
+  word-break: break-all; /* Prevents overflow from long strings */
+}
+
+.text-wrap {
+  white-space: normal;
+  display: inline-block;
+}
+
+.text-accent {
+  color: var(--mu-colors-text-accent1);
+}
+
+/* Reusing your Badge styles */
+.widget-badge {
+  font-size: var(--mu-font-size-1);
+  padding: var(--mu-spacing-0-5) var(--mu-spacing-1-5);
+  border-radius: var(--mu-border-radius-2);
+  font-weight: var(--mu-font-weight-bold);
+  text-transform: uppercase;
+}
+
+.widget-badge.succeeded {
+  background: var(--mu-colors-background-success1);
+  color: var(--mu-colors-text-success1);
+}
+
+.widget-badge.failed {
+  background: var(--mu-colors-background-critical1);
+  color: var(--mu-colors-text-critical1);
+}
+
+.text-warning {
+  color: var(--mu-colors-text-warning1);
 }

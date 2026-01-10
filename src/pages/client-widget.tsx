@@ -1,15 +1,41 @@
 import { NextPage } from "next";
+import { useEffect, useState } from "react";
 import { useAppBridge } from "@saleor/app-sdk/app-bridge";
-import { Text } from "@saleor/macaw-ui";
+import { Button, Text } from "@saleor/macaw-ui";
 
 const ClientWidget: NextPage = () => {
-  const { appBridgeState } = useAppBridge();
+  const { appBridge, appBridgeState } = useAppBridge();
+  const [productId, setProductId] = useState<string | null>(null);
 
-  if (!appBridgeState?.ready) {
-    return <Text>Loading widget...</Text>;
+  useEffect(() => {
+    if (!appBridgeState?.ready) return;
+    const encoded = appBridgeState.path.split("products/")[1];
+    if (!encoded) return;
+    setProductId(decodeURIComponent(encoded));
+  }, [appBridgeState?.ready, appBridgeState?.path]);
+
+  if (!appBridgeState?.ready || !productId) {
+    return <Text>Loading…</Text>;
   }
 
-  return <Text>This is a client widget 😎. Your email is {appBridgeState.user?.email}.</Text>;
+  const openDetails = () => {
+    appBridge?.dispatch({
+      type: "redirect",
+      payload: {
+        actionId: "open-client-widget-details",
+        to: `/extensions/app/${appBridgeState.id}/info?productId=${encodeURIComponent(productId)}`,
+      },
+    });
+  };
+
+  return (
+    <div>
+      <Text>Index status available</Text>
+      <Button variant="secondary" onClick={openDetails}>
+        View indexed data
+      </Button>
+    </div>
+  );
 };
 
 export default ClientWidget;

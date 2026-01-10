@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { meili } from "../meili/client";
+import { meili } from "../client";
 
 export default async function deleteMeiliIndexes(index?: string | string[]) {
   if (!index) {
